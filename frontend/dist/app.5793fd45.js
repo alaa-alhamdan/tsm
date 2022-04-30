@@ -97224,6 +97224,9 @@ var paths = require('./2paths.jpg');
 
 var map = require('./onemap.jpg');
 
+var useState = React.useState,
+    useEffect = React.useEffect,
+    useRef = React.useRef;
 var sdk = new charts_embed_dom_1.default({
   baseUrl: "https://charts.mongodb.com/charts-project-0-seudn"
 }); // for buses : chart 1 and 3 
@@ -97248,15 +97251,11 @@ var chart4 = sdk.createChart({
   chartId: "6268f1a8-c207-4d4e-86ed-8d7e43ada64f",
   height: "300px",
   theme: "dark"
-}); // const  API_Google_Map_KEY = .AIzaSyC1QAymcINjIAuP8b-p1TIWd9xJwzh77oY ; 
-
+});
 var HashRouter = ReactRouterDOM.HashRouter,
     Route = ReactRouterDOM.Route,
     Link = ReactRouterDOM.Link,
     Routes = ReactRouterDOM.Routes;
-var useState = React.useState,
-    useEffect = React.useEffect,
-    useRef = React.useRef;
 
 var HomePage =
 /** @class */
@@ -97758,45 +97757,58 @@ var Metric =
 function (_super) {
   __extends(Metric, _super);
 
-  function Metric(props) {
-    var _this = _super.call(this, props) || this;
+  function Metric() {
+    var _this = _super !== null && _super.apply(this, arguments) || this;
 
-    _this.handleSubmitmetrix = _this.handleSubmitmetrix.bind(_this);
+    _this.state = {
+      minutes: 10,
+      seconds: 0
+    };
     return _this;
   }
 
-  Metric.prototype.handleSubmitmetrix = function (event) {
-    var travel = {
-      "origins": [42.30432, -73.4389],
-      "destinations": [42.30432, -73.4389]
-    };
-    event.preventDefault();
-    console.log("submitted");
-    console.log(travel);
-    var requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(travel)
-    };
-    fetch('http://localhost:3000/test', requestOptions).then(function (response) {
-      return response.json();
-    }).then(function (data) {
-      document.getElementById('resultmetrix').innerHTML = data.result;
-    });
-    console.log(" data recived ");
+  Metric.prototype.componentDidMount = function () {
+    var _this = this;
+
+    this.myInterval = setInterval(function () {
+      var _a = _this.state,
+          seconds = _a.seconds,
+          minutes = _a.minutes;
+
+      if (seconds > 0) {
+        _this.setState(function (_a) {
+          var seconds = _a.seconds;
+          return {
+            seconds: seconds - 1
+          };
+        });
+      }
+
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(_this.myInterval);
+        } else {
+          _this.setState(function (_a) {
+            var minutes = _a.minutes;
+            return {
+              minutes: minutes - 1,
+              seconds: 59
+            };
+          });
+        }
+      }
+    }, 1000);
+  };
+
+  Metric.prototype.componentWillUnmount = function () {
+    clearInterval(this.myInterval);
   };
 
   Metric.prototype.render = function () {
-    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("title", null, "Book A ticket "), /*#__PURE__*/React.createElement("form", {
-      onSubmit: this.handleSubmitmetrix
-    }, /*#__PURE__*/React.createElement("h2", null, "dist. matrix  test :"), /*#__PURE__*/React.createElement("p", null, "  click to show the dist :  "), /*#__PURE__*/React.createElement("input", {
-      type: "submit",
-      value: "Submit"
-    })), /*#__PURE__*/React.createElement("p", null, " result : "), /*#__PURE__*/React.createElement("div", {
-      id: "resultmetrix"
-    }));
+    var _a = this.state,
+        minutes = _a.minutes,
+        seconds = _a.seconds;
+    return /*#__PURE__*/React.createElement("div", null, minutes === 0 && seconds === 0 ? /*#__PURE__*/React.createElement("h1", null, "Busted!") : /*#__PURE__*/React.createElement("h1", null, "Time estmated  for bus from path 6  to arrive : ", minutes, ":", seconds < 10 ? "0".concat(seconds) : seconds));
   };
 
   return Metric;
@@ -98051,7 +98063,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58555" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61191" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

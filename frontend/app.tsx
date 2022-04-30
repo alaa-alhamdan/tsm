@@ -4,11 +4,12 @@ import * as ReactRouterDOM from  'react-router-dom' ;
 import axios from 'axios';
 import * as googlemap from 'react-google-maps' ; 
 import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
+import moment from 'moment';
 
 const paths = require( './2paths.jpg') ;
 const map = require( './onemap.jpg') ;
 
-
+const {useState, useEffect , useRef } = React; 
 const sdk = new ChartsEmbedSDK({
   baseUrl: "https://charts.mongodb.com/charts-project-0-seudn"
 });
@@ -43,7 +44,7 @@ const chart4 = sdk.createChart({
 
 
 const { HashRouter, Route, Link, Routes } = ReactRouterDOM ;
-const {useState, useEffect , useRef } = React; 
+
 
 
 class HomePage extends React.Component {
@@ -508,64 +509,50 @@ class Bookbus   extends React.Component {
                 
 
  class Metric   extends React.Component {
-   
-           
-                  constructor(props){
-                    super(props);
-            
-                
+  state = {
+    minutes: 10,
+    seconds: 0,
+}
 
-                  this.handleSubmitmetrix = this.handleSubmitmetrix.bind(this);
-      
-              
-                  
-                    }
-                    handleSubmitmetrix(event) {
-                      let travel  = {
-                        "origins" : [42.30432,-73.4389] ,
-                        "destinations" : [42.30432,-73.4389],
-                       
-              
-                      }
-                
-                      event.preventDefault()
-                      console.log("submitted");
-                      console.log(travel);
-                    
-                      const requestOptions = {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify( travel )
-                      };
-                      
-                      fetch('http://localhost:3000/test', requestOptions)
-                          .then(response => response.json())
-                          .then(data => {
-                            document.getElementById('resultmetrix').innerHTML = data.result ;  })  
-                            console.log(" data recived ")
-                    }
-                    
-                        render() {
-                           return(<div >
-                              <title >Book A ticket </title>
-                      
-                   
-      
-      
-                           <form onSubmit={this.handleSubmitmetrix}>
-                  <h2>dist. matrix  test :</h2>
-                  <p>  click to show the dist :  </p>
-      
-                      <input type="submit" value="Submit" />
-          
-                  </form>  
-                  <p> result : </p>
-                  <div id="resultmetrix"></div> 
-                       
-                    </div>  );
-                        }
-              
-                      }
+componentDidMount() {
+    this.myInterval = setInterval(() => {
+        const { seconds, minutes } = this.state
+
+        if (seconds > 0) {
+            this.setState(({ seconds }) => ({
+                seconds: seconds - 1
+            }))
+        }
+        if (seconds === 0) {
+            if (minutes === 0) {
+                clearInterval(this.myInterval)
+            } else {
+                this.setState(({ minutes }) => ({
+                    minutes: minutes - 1,
+                    seconds: 59
+                }))
+            }
+        } 
+    }, 1000)
+}
+
+componentWillUnmount() {
+    clearInterval(this.myInterval)
+}
+
+render() {
+    const { minutes, seconds } = this.state
+    return (
+        <div>
+            { minutes === 0 && seconds === 0
+                ? <h1>Busted!</h1>
+                : <h1>Time estmated  for bus from path 6  to arrive : {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h1>
+            }
+        </div>
+    )
+}
+}
+
 class Bookcar  extends React.Component {
             
                  

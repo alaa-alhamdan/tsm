@@ -1,0 +1,18 @@
+import moment from 'moment';
+
+
+const then = moment(timeTillDate, timeFormat);
+const now = moment();
+const countdown = moment(then - now);
+const days = countdown.format('D');
+const hours = countdown.format('HH');
+const minutes = countdown.format('mm');
+const seconds = countdown.format('ss');
+function timeTillDate(timeTillDate: any, timeFormat: any) {
+    throw new Error('Function not implemented.');
+}
+
+function timeFormat(timeTillDate: (timeTillDate: any, timeFormat: any) => void, timeFormat: any) {
+    throw new Error('Function not implemented.');
+}
+

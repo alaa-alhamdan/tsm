@@ -22,6 +22,7 @@
     "axios": "^0.26.1",
     "git": "^0.1.5",
     "google-distance-matrix": "^1.1.1",
+    "moment": "^2.29.3",
     "node-geometry-library": "^1.2.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
