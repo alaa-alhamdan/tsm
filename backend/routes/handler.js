@@ -304,12 +304,14 @@ router.post('/profile',  async  (req, res) => {
 
     let filterbuses = { username: req.body.username }
             const busesfi  =    busesdb.find(filterbuses)
-             .then( data =>  console.log("Data found: ", data))
+            .then((data) => {
+                console.log('Data: ', data);
+                res.json(data);
+            })
+      
               
               .catch( err => console.log("Error: ", err) )
-          
-             // console.log(" filterd data :" , busesfi)
-              res.send({"posts": busesfi})
+            
 
   
 
@@ -330,7 +332,7 @@ router.post('/test',    (req, res) => {
 
 })
 
-
+ 
 });
 
 

@@ -5,6 +5,9 @@ import axios from 'axios';
 import * as googlemap from 'react-google-maps' ; 
 import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
 
+const paths = require( './2paths.jpg') ;
+const map = require( './onemap.jpg') ;
+
 
 const sdk = new ChartsEmbedSDK({
   baseUrl: "https://charts.mongodb.com/charts-project-0-seudn"
@@ -35,7 +38,6 @@ const chart4 = sdk.createChart({
   height: "300px",
   theme: "dark"
 });
-// const  API_Google_Map_KEY = .AIzaSyC1QAymcINjIAuP8b-p1TIWd9xJwzh77oY ; 
 
 
 
@@ -109,7 +111,7 @@ class Buses  extends React.Component {
          <head>  <title >Buses </title>
     </head>
     <body>
-        <h1  >Cars Services   </h1>
+        <h1  >Buses Services   </h1>
         <p> There are 4 paths that you can reach Alharam: </p>
 <ul>
 <li> From Um Al Qura to Ajyad Station. Path 6  </li>
@@ -117,6 +119,10 @@ class Buses  extends React.Component {
     <li> From Anwariya to Kaaba Station. Path2 </li>
     <li> From Haramain Train to Jabal Omar. path 7  </li>
 </ul>
+
+<img src={paths} width="300" height="300" />
+<img src={map} width="300" height="300" />
+
 
 
 
@@ -131,11 +137,11 @@ class Buses  extends React.Component {
              </ul>
              <p>  Tickets  analysis in term of time  </p>
             <div style={{display: "flex", justifyContent: "space-around", width: "100%"}}>
-                <div style={{minWidth: "300px"}} id="mongochart1" />
+                <div style={{minWidth: "700px"}} id="mongochart1" />
                
             </div>
             <div style={{display: "flex", justifyContent: "space-around", width: "100%"}}>
-                <div style={{minWidth: "300px"}} id="mongochart3" />
+                <div style={{minWidth: "700px"}} id="mongochart3" />
                
             </div>
             <div>
@@ -181,7 +187,7 @@ class Buses  extends React.Component {
             </div>
 
             <div style={{display: "flex", justifyContent: "space-around", width: "100%"}}>
-                <div style={{minWidth: "300px"}} id="mongochart3" />
+                <div style={{minWidth: "700px"}} id="mongochart3" />
                
             </div>
 
@@ -192,7 +198,7 @@ class Buses  extends React.Component {
             </div>
 
             <div style={{display: "flex", justifyContent: "space-around", width: "100%"}}>
-                <div style={{minWidth: "300px"}} id="mongochart4" />
+                <div style={{minWidth: "700px"}} id="mongochart4" />
                
             </div>
             
@@ -226,8 +232,8 @@ class Cars  extends React.Component {
           <h1  >Cars Services   </h1>
           <p> There are 2 station that you can book a car from Alharam: </p>
   <ul>
-    <li> From Alsafwah. </li>
-    <li> From Jabal Omar.  </li>
+    <li> From Alsafwah.   Station1</li>
+    <li> From Jabal Omar. Station2  </li>
   </ul>
 
  
@@ -666,7 +672,7 @@ class Profile extends React.Component {
                         constructor(props) {
                           super(props);
                           this.state = { 
-                            posts:[]
+                            posts: []
                             };
 
                           

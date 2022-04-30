@@ -96984,7 +96984,11 @@ class EmbedSDK {
 
 var _default = EmbedSDK;
 exports.default = _default;
-},{"bson":"node_modules/bson/dist/bson.browser.esm.js","@looker/chatty":"node_modules/@looker/chatty/lib/index.js","lodash/isEqual":"node_modules/lodash/isEqual.js","lodash/isEmpty":"node_modules/lodash/isEmpty.js"}],"app.tsx":[function(require,module,exports) {
+},{"bson":"node_modules/bson/dist/bson.browser.esm.js","@looker/chatty":"node_modules/@looker/chatty/lib/index.js","lodash/isEqual":"node_modules/lodash/isEqual.js","lodash/isEmpty":"node_modules/lodash/isEmpty.js"}],"2paths.jpg":[function(require,module,exports) {
+module.exports = "/2paths.5a912745.jpg";
+},{}],"onemap.jpg":[function(require,module,exports) {
+module.exports = "/onemap.d4a0fbfc.jpg";
+},{}],"app.tsx":[function(require,module,exports) {
 "use strict";
 
 var __extends = this && this.__extends || function () {
@@ -97216,6 +97220,10 @@ var ReactRouterDOM = __importStar(require("react-router-dom"));
 
 var charts_embed_dom_1 = __importDefault(require("@mongodb-js/charts-embed-dom"));
 
+var paths = require('./2paths.jpg');
+
+var map = require('./onemap.jpg');
+
 var sdk = new charts_embed_dom_1.default({
   baseUrl: "https://charts.mongodb.com/charts-project-0-seudn"
 }); // for buses : chart 1 and 3 
@@ -97319,7 +97327,15 @@ function (_super) {
   };
 
   Buses.prototype.render = function () {
-    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("head", null, "  ", /*#__PURE__*/React.createElement("title", null, "Buses ")), /*#__PURE__*/React.createElement("body", null, /*#__PURE__*/React.createElement("h1", null, "Cars Services   "), /*#__PURE__*/React.createElement("p", null, " There are 4 paths that you can reach Alharam: "), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, " From Um Al Qura to Ajyad Station. Path 6  "), /*#__PURE__*/React.createElement("li", null, " From Alhajj Street to AlMarwa Station. Path 10 "), /*#__PURE__*/React.createElement("li", null, " From Anwariya to Kaaba Station. Path2 "), /*#__PURE__*/React.createElement("li", null, " From Haramain Train to Jabal Omar. path 7  ")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", null, " you can : "), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement(Link, {
+    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("head", null, "  ", /*#__PURE__*/React.createElement("title", null, "Buses ")), /*#__PURE__*/React.createElement("body", null, /*#__PURE__*/React.createElement("h1", null, "Buses Services   "), /*#__PURE__*/React.createElement("p", null, " There are 4 paths that you can reach Alharam: "), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, " From Um Al Qura to Ajyad Station. Path 6  "), /*#__PURE__*/React.createElement("li", null, " From Alhajj Street to AlMarwa Station. Path 10 "), /*#__PURE__*/React.createElement("li", null, " From Anwariya to Kaaba Station. Path2 "), /*#__PURE__*/React.createElement("li", null, " From Haramain Train to Jabal Omar. path 7  ")), /*#__PURE__*/React.createElement("img", {
+      src: paths,
+      width: "300",
+      height: "300"
+    }), /*#__PURE__*/React.createElement("img", {
+      src: map,
+      width: "300",
+      height: "300"
+    }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", null, " you can : "), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement(Link, {
       to: "/registration"
     }, "registration")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement(Link, {
       to: "/bookbus"
@@ -97331,7 +97347,7 @@ function (_super) {
       }
     }, /*#__PURE__*/React.createElement("div", {
       style: {
-        minWidth: "300px"
+        minWidth: "700px"
       },
       id: "mongochart1"
     })), /*#__PURE__*/React.createElement("div", {
@@ -97342,7 +97358,7 @@ function (_super) {
       }
     }, /*#__PURE__*/React.createElement("div", {
       style: {
-        minWidth: "300px"
+        minWidth: "700px"
       },
       id: "mongochart3"
     })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(Routes, null, /*#__PURE__*/React.createElement(Route, {
@@ -97427,7 +97443,7 @@ function (_super) {
       }
     }, /*#__PURE__*/React.createElement("div", {
       style: {
-        minWidth: "300px"
+        minWidth: "700px"
       },
       id: "mongochart3"
     })), /*#__PURE__*/React.createElement("p", null, "Cars  analysis "), /*#__PURE__*/React.createElement("div", {
@@ -97449,7 +97465,7 @@ function (_super) {
       }
     }, /*#__PURE__*/React.createElement("div", {
       style: {
-        minWidth: "300px"
+        minWidth: "700px"
       },
       id: "mongochart4"
     })));
@@ -97495,7 +97511,7 @@ function (_super) {
   };
 
   Cars.prototype.render = function () {
-    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("head", null, "  ", /*#__PURE__*/React.createElement("title", null, "Cars ")), /*#__PURE__*/React.createElement("body", null, /*#__PURE__*/React.createElement("h1", null, "Cars Services   "), /*#__PURE__*/React.createElement("p", null, " There are 2 station that you can book a car from Alharam: "), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, " From Alsafwah. "), /*#__PURE__*/React.createElement("li", null, " From Jabal Omar.  ")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", null, " you can : "), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement(Link, {
+    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("head", null, "  ", /*#__PURE__*/React.createElement("title", null, "Cars ")), /*#__PURE__*/React.createElement("body", null, /*#__PURE__*/React.createElement("h1", null, "Cars Services   "), /*#__PURE__*/React.createElement("p", null, " There are 2 station that you can book a car from Alharam: "), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, " From Alsafwah.   Station1"), /*#__PURE__*/React.createElement("li", null, " From Jabal Omar. Station2  ")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", null, " you can : "), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement(Link, {
       to: "/registration"
     }, "registration")), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement(Link, {
       to: "/bookcar"
@@ -98007,7 +98023,7 @@ function (_super) {
 }(React.Component);
 
 ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.getElementById('app'));
-},{"react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","react-router-dom":"node_modules/react-router-dom/index.js","@mongodb-js/charts-embed-dom":"node_modules/@mongodb-js/charts-embed-dom/dist/charts-embed-dom.esm.js"}],"../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","react-dom":"node_modules/react-dom/index.js","react-router-dom":"node_modules/react-router-dom/index.js","@mongodb-js/charts-embed-dom":"node_modules/@mongodb-js/charts-embed-dom/dist/charts-embed-dom.esm.js","./2paths.jpg":"2paths.jpg","./onemap.jpg":"onemap.jpg"}],"../../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -98035,7 +98051,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60929" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58555" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
