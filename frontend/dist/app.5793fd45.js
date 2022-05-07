@@ -108558,7 +108558,7 @@ function (_super) {
       }
     }, /*#__PURE__*/React.createElement(google_map_react_1.default, {
       bootstrapURLKeys: {
-        key: 'AIzaSyAyesbQMyKVVbBgKVi2g6VX7mop2z96jBo'
+        key: 'AIzaSyC1QAymcINjIAuP8b-p1TIWd9xJwzh77oY'
       },
       defaultCenter: this.props.center,
       defaultZoom: this.props.zoom,
@@ -108851,7 +108851,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58207" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60981" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
