@@ -2,15 +2,17 @@ import * as React  from 'react';
 import * as ReactDOM from 'react-dom';
 import * as ReactRouterDOM from  'react-router-dom' ;
 import axios from 'axios';
-import * as googlemap from 'react-google-maps' ; 
+
 import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
-import * as Google from  'google-maps-react';
-//import { DistanceMatrixService } from 'google-maps-react';
-//import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
 import { Map, GoogleApiWrapper } from 'google-maps-react';
+import GoogleMapReact from 'google-map-react';
+
+
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
+
 const mapStyles = {
-  width: '50%',
-  height: '50%'
+  width: '100%',
+  height: '100%'
 };
 
 
@@ -633,15 +635,7 @@ class Bookbus   extends React.Component {
 
                     <div >   <h2 id="result"> </h2></div> 
 
-                     <form onSubmit={this.handleSubmitmetrix}>
-            <h2>dist. matrix  test :</h2>
-            <p>  click to show the dist :  </p>
-
-                <input type="submit" value="Submit" />
-    
-            </form>  
-            <p> result : </p>
-            <div id="resultmetrix"></div> 
+                
                  
               </div>  );
                   }
@@ -696,22 +690,6 @@ render() {
 
 
 
-<Map
-        google={this.props.google}
-        zoom={14}
-        style={mapStyles}
-        initialCenter={
-          {
-            lat: -1.2884,
-            lng: 36.8233
-          }
-        }
-      />
-
-
-
-
-
 
         </div>
         
@@ -721,7 +699,45 @@ render() {
 }
 }
 
+export class MapContainer extends React.Component <any> {
+  static defaultProps = {
+    center: {
+      lat: 21.334094,
+      lng: 39.945512
+    },
+    zoom: 11,
+    yesIWantToUseGoogleMapApiInternals: true
+  };
 
+  render() {
+    return (
+      <div style={{ height: '50vh', width: '35%', justifyContent: 'flex-end' }}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key:'AIzaSyAyesbQMyKVVbBgKVi2g6VX7mop2z96jBo' }}
+          defaultCenter={this.props.center}
+          defaultZoom={this.props.zoom}
+          yesIWantToUseGoogleMapApiInternals
+          lat={21.334094}
+          lng={39.945512}
+        >
+          <AnyReactComponent
+            lat={21.334094}
+            lng={39.945512}
+            text="Um Al Qura Station Location"
+
+        
+          />
+              <AnyReactComponent
+         
+            lat={21.416721}
+            lng={ 39.827589}
+            text="Ajyad Station Location"
+          />
+        </GoogleMapReact>
+      </div>
+    );
+  }
+}
 
 class Bookcar  extends React.Component {
             
@@ -934,6 +950,7 @@ class App extends React.Component {
               <li><Link to="/Metric">Metric </Link></li> 
               <li><Link to="/Dashboard">Dashboard </Link></li> 
               <li><Link to="/LogIn"> LogIn </Link></li> 
+              <li><Link to="/MapContainer"> MapContainer </Link></li>
           </ul>
          <div>
              <Routes>
@@ -946,6 +963,7 @@ class App extends React.Component {
                 <Route path="/Metric" element ={< Metric />}/> 
                 <Route path="/Dashboard" element ={< Dashboard />}/> 
                 <Route path="/LogIn" element ={< LogIn />}/> 
+                <Route path="/MapContainer" element ={< MapContainer />}/> 
 
             
              </Routes>
@@ -960,6 +978,7 @@ class App extends React.Component {
   ReactDOM.render(< App />, document.getElementById('app'));
 
 
-    export default GoogleApiWrapper({
+export default GoogleApiWrapper({
       apiKey: 'AIzaSyC1QAymcINjIAuP8b-p1TIWd9xJwzh77oY'
-    })( Metric );
+    })( MapContainer );
+
