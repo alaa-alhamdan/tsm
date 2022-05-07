@@ -4,7 +4,15 @@ import * as ReactRouterDOM from  'react-router-dom' ;
 import axios from 'axios';
 import * as googlemap from 'react-google-maps' ; 
 import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
-import moment from 'moment';
+import * as Google from  'google-maps-react';
+//import { DistanceMatrixService } from 'google-maps-react';
+//import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+import { Map, GoogleApiWrapper } from 'google-maps-react';
+const mapStyles = {
+  width: '50%',
+  height: '50%'
+};
+
 
 const paths = require( './2paths.jpg') ;
 const map = require( './onemap.jpg') ;
@@ -182,6 +190,7 @@ class Buses  extends React.Component {
         <div>
             <h1> Management Dashboard</h1>
             <p>Buses   analysis </p>
+            <p>As showing in the charts,the morning is the less crowded then other times.  </p>
             <div style={{display: "flex", justifyContent: "space-around", width: "100%"}}>
                 <div style={{minWidth: "700px"}} id="mongochart1" />
                
@@ -193,6 +202,7 @@ class Buses  extends React.Component {
             </div>
 
             <p>Cars  analysis </p>
+            <p>As showing in the charts,the end users usually book a trip without scuduling, so we suggest you to scudule your trip.   </p>
             <div style={{display: "flex", justifyContent: "space-around", width: "100%"}}>
                 <div style={{minWidth: "700px"}} id="mongochart2" />
                
@@ -363,7 +373,138 @@ class Registration   extends React.Component {
 
         }
 
+
+
+ class LogIn   extends React.Component {
+  
+          constructor(props) {
+            super(props);
+        
+            this.state = {
+               
+              result: '',
+              posts: [],
+            };
+            this.handleSubmit = this.handleSubmit.bind(this);
+          
+            }
+            
+          handleSubmitreg(event) {
+              let user = {
+                "username" : event.target.inputun.value,
+                "password" : event.target.inputpass.value ,
+               
+                
+      
+              }
+              const uninput = document.getElementById('uninput')
+              const passinput = document.getElementById('passinput')
+             
+      
+          
+              event.preventDefault()
+              console.log("submitted");
+              console.log(user);
+            
+              const requestOptions = {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify( user )
+              };
+              
+              fetch('http://localhost:3000/home/login', requestOptions)
+                  .then(response => response.json())
+                  .then(data => {
+                    document.getElementById('result').innerHTML = data.result ;  })  
+                    console.log('result')
+            }
+
+            handleSubmit(event) {
+              let dateinput = {
+                "username" : event.target.inputun2.value ,
+                
+              }
+              const uninput2 = document.getElementById('uninput2')
+              event.preventDefault()
+              console.log("submitted");
+            
+              const requestOptions = {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify( dateinput )
+              };
+              
+              fetch('http://localhost:3000/profile', requestOptions)
+              .then(response => response.json())
+              .then(data => { this.setState({ posts: data }); 
+              console.log(data);
+              console.log('Data has been received!!');
+          
+            })
+            }
+          
+          
+            displayBlogPost = (posts) => {
+          
+              if (!posts.length) return null;
+          
+          
+              return posts.map((post, index) => (
+                <div key={index} className="blog-post__display">
+                  <h3>{post.path}</h3>
+                  <p>{post.createdOn}</p>
+                  <p>{post.time}</p>
+
+
+                </div>
+              ));
+            };
+            
+                render() {
+      
+                 
+                   return(<div >
+                      <title >Log In  </title>
+              
+            <form onSubmit={this.handleSubmitreg}>
+            <h2>LogIn form:</h2>
+                      <label>
+                          Username :
+                          <input id="uninput" type="text"   name="inputun" />
+                      </label>
+                      <label>
+                          Passworsd:
+                          <input id="passinput" type="text"  name="inputpass" />  
+                      </label>
+                      
+                      <input type="submit" value="Submit" />
+             
+                    
+                  </form>  
+                  <div >   <h2 id="result"> </h2></div>
+
+                  
+                  <form onSubmit={this.handleSubmit}>
+            <h2>History :</h2>
+            <p>   to see your history  :  </p>
+            <label>
+                          Username :
+                          <input id="uninput2" type="text"   name="inputun2" />
+                      </label>
+
+                <input type="submit" value="Submit" />
     
+            </form>
+
+            <div className="blog-">
+          {this.displayBlogPost(this.state.posts)}
+        </div>  
+               
+            </div>  );
+                }
+      
+              }
+      
 
 class Bookbus   extends React.Component {
    
@@ -409,7 +550,7 @@ class Bookbus   extends React.Component {
         
                 }
                 
-                
+               
                 event.preventDefault()
                 console.log("submitted");
                 console.log(ticket);
@@ -509,9 +650,13 @@ class Bookbus   extends React.Component {
                 
 
  class Metric   extends React.Component {
+  
   state = {
     minutes: 10,
     seconds: 0,
+
+
+
 }
 
 componentDidMount() {
@@ -546,12 +691,37 @@ render() {
         <div>
             { minutes === 0 && seconds === 0
                 ? <h1>Busted!</h1>
-                : <h1>Time estmated  for bus from path 6  to arrive : {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h1>
+                : <h1>Time Estmated  for bus from path 6  to arrive : {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h1>
             }
+
+
+
+<Map
+        google={this.props.google}
+        zoom={14}
+        style={mapStyles}
+        initialCenter={
+          {
+            lat: -1.2884,
+            lng: 36.8233
+          }
+        }
+      />
+
+
+
+
+
+
         </div>
+        
     )
+    
+    
 }
 }
+
+
 
 class Bookcar  extends React.Component {
             
@@ -713,10 +883,10 @@ class Profile extends React.Component {
                     
                             <div>
                               <h1  > User Profile  </h1>
-                             <p  > Here you can viwe your history :</p> 
+                             
                              <form onSubmit={this.handleSubmit}>
-            <h2> :</h2>
-        
+            <h2> Here you can viwe your Tickets history : </h2>
+            <p  > please enter your username  :</p>
             <label>
                     Username :
                     <input id="uninput" type="text"   name="inputun" />
@@ -741,8 +911,6 @@ class App extends React.Component {
      
     }  
     
-    
-  
     render() {
   
       
@@ -752,8 +920,9 @@ class App extends React.Component {
        
         <HashRouter>
         <div>
-          <h1  > TSM </h1>
-         <p  > this is part of project  which it under the COE 558: Cloud and Edge Computing course </p> 
+        <h1> Transport System Management </h1>
+        <p>Welcome to Transport System Management, we aim to help the end users to book a Tickets or see the Suggestion bar.  </p>
+         <p> This is part of project  which it under the COE 558: Cloud and Edge Computing course </p> 
           <ul>
           
               <li><Link to="/Buses">Buses </Link></li>      
@@ -764,7 +933,7 @@ class App extends React.Component {
               <li><Link to="/Profile">user profile </Link></li> 
               <li><Link to="/Metric">Metric </Link></li> 
               <li><Link to="/Dashboard">Dashboard </Link></li> 
-             
+              <li><Link to="/LogIn"> LogIn </Link></li> 
           </ul>
          <div>
              <Routes>
@@ -776,6 +945,7 @@ class App extends React.Component {
                 <Route path="/Profile" element ={< Profile />}/>  
                 <Route path="/Metric" element ={< Metric />}/> 
                 <Route path="/Dashboard" element ={< Dashboard />}/> 
+                <Route path="/LogIn" element ={< LogIn />}/> 
 
             
              </Routes>
@@ -788,3 +958,8 @@ class App extends React.Component {
   }
   
   ReactDOM.render(< App />, document.getElementById('app'));
+
+
+    export default GoogleApiWrapper({
+      apiKey: 'AIzaSyC1QAymcINjIAuP8b-p1TIWd9xJwzh77oY'
+    })( Metric );
