@@ -4,11 +4,12 @@ import * as ReactRouterDOM from  'react-router-dom' ;
 import axios from 'axios';
 
 import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
-import { Map, GoogleApiWrapper } from 'google-maps-react';
+import { Map, GoogleApiWrapper  } from 'google-maps-react';
 import GoogleMapReact from 'google-map-react';
 
 
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const API_KEY  = 'AIzaSyC1QAymcINjIAuP8b-p1TIWd9xJwzh77oY';
 
 const mapStyles = {
   width: '100%',
@@ -17,7 +18,7 @@ const mapStyles = {
 
 
 const paths = require( './2paths.jpg') ;
-const map = require( './onemap.jpg') ;
+const map2 = require( './onemap.jpg') ;
 
 const {useState, useEffect , useRef } = React; 
 const sdk = new ChartsEmbedSDK({
@@ -132,7 +133,7 @@ class Buses  extends React.Component {
 </ul>
 
 <img src={paths} width="300" height="300" />
-<img src={map} width="300" height="300" />
+<img src={map2} width="300" height="300" />
 
 
 
@@ -644,59 +645,126 @@ class Bookbus   extends React.Component {
                 
 
  class Metric   extends React.Component {
-  
-  state = {
-    minutes: 10,
-    seconds: 0,
+  constructor(props) {
+    super(props);
+    this.state = {
+      originLat: null,
+      originLng: null,
+      destLat: null,
+      destLng: null,
+      distance1: null,
+      duration1: null,
+      distance2: null,
+      duration2: null
+    };
+    this.onScriptLoad = this.onScriptLoad.bind(this);
+  }
 
+  onScriptLoad() {
+    let coordsArray = [
+      { lat: 21.334094, lng:  39.945512 },
+      { lat: 21.416721 , lng: 39.827589 }
+    ];
+    this.setState({
+      originLat: coordsArray[0].lat,
+      originLng: coordsArray[0].lng,
+      destLat: coordsArray[0].lat,
+      destLng: coordsArray[0].lng
+    });
 
-
-}
-
-componentDidMount() {
-    this.myInterval = setInterval(() => {
-        const { seconds, minutes } = this.state
-
-        if (seconds > 0) {
-            this.setState(({ seconds }) => ({
-                seconds: seconds - 1
-            }))
+    let service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix(
+      {
+        origins: [{ lat: 21.334094, lng:  39.945512 }],
+        destinations: [{lat: 21.416721 , lng: 39.827589 }],
+        travelMode: "DRIVING"
+      },
+      (response, status) => {
+        if (status !== "OK") {
+          alert("Error was: " + status);
+        } else {
+          this.setState({
+            distance1: response.rows[0].elements[0].distance.text,
+            duration1:response.rows[0].elements[0].duration.text
+          });
         }
-        if (seconds === 0) {
-            if (minutes === 0) {
-                clearInterval(this.myInterval)
-            } else {
-                this.setState(({ minutes }) => ({
-                    minutes: minutes - 1,
-                    seconds: 59
-                }))
-            }
-        } 
-    }, 1000)
-}
+      }
+    );
 
-componentWillUnmount() {
-    clearInterval(this.myInterval)
-}
+    let service2 = new google.maps.DistanceMatrixService();
+    service2.getDistanceMatrix(
+      {
+        origins: [{ lat: 21.471654 , lng:  39.843240 }],
+        destinations: [{lat: 21.428016 , lng:  39.828845 }],
+        travelMode: "DRIVING"
+      },
+      (response, status) => {
+        if (status !== "OK") {
+          alert("Error was: " + status);
+        } else {
+          this.setState({
+            distance2: response.rows[0].elements[0].distance.text ,
+            duration2:response.rows[0].elements[0].duration.text
+          });
+        }
+      }
+    );
+ 
+  }
+  componentDidMount() {
+    if (!window.google) {
+      var s = document.createElement("script");
+      s.type = "text/javascript";
+      s.src = `https://maps.google.com/maps/api/js?key=AIzaSyC1QAymcINjIAuP8b-p1TIWd9xJwzh77oY`;
+      var x = document.getElementsByTagName("script")[0];
+      x.parentNode.insertBefore(s, x);
+      // Below is important.
+      //We cannot access google.maps until it's finished loading
+      s.addEventListener("load", e => {
+        this.onScriptLoad();
+      });
+    } else {
+      this.onScriptLoad();
+    }
+  }
 
-render() {
-    const { minutes, seconds } = this.state
+  render() {
     return (
-        <div>
-            { minutes === 0 && seconds === 0
-                ? <h1>Busted!</h1>
-                : <h1>Time Estmated  for bus from path 6  to arrive : {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</h1>
-            }
-
-
-
-
-        </div>
+      <div style={{ width: 500, height: 500 }} id={this.props.id}>
+        <h1> Distance Matrix:</h1>
+        <p>  Distance Matrix by using google map API  </p>
+        <br />
+        <label>
+          Origin: Um Al Qura station
+        </label>
+        <br />
+        <label>
+          Destination:  Ajyad Station
+        </label>
+        <br />
+        <label>Distance between the Um Al Qura station to Ajyad Station is :{this.state.distance1}</label>
+        <br />
+        <label>Duration between the Um Al Qura station to Ajyad Station is :{this.state.duration1}</label>
+        <br />
+        <br />
+        <label>
+          Origin: Alhajj Street station 
+        </label>
+        <br />
+        <label>
+          Destination: AlMarwa Station.
+        </label>
+        <br />
+        <label>Distance between the Alhajj Street station to AlMarwa Station is :{this.state.distance2}</label>
+        <br />
+        <label>Duration between the Alhajj Street station to AlMarwa Station is :{this.state.duration2}</label>
         
-    )
-    
-    
-}
+      </div>
+    );
+  }
+
+  
+
 }
 
 export class MapContainer extends React.Component <any> {
@@ -710,22 +778,34 @@ export class MapContainer extends React.Component <any> {
   };
 
   render() {
+
     return (
       <div style={{ height: '50vh', width: '35%', justifyContent: 'flex-end' }}>
+        <h1> Stations location</h1>
+        <p>here you can find the location of the buses stations, you can zoom to see more  </p>
         <GoogleMapReact
           bootstrapURLKeys={{ key:'AIzaSyC1QAymcINjIAuP8b-p1TIWd9xJwzh77oY' }}
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
           yesIWantToUseGoogleMapApiInternals
-          lat={21.334094}
+          lat={21.334094}   
           lng={39.945512}
         >
           <AnyReactComponent
             lat={21.334094}
             lng={39.945512}
             text="Um Al Qura Station Location"
+          />
 
-        
+          <AnyReactComponent
+            lat={21.471654}
+            lng={39.843240}
+            text="Alhajj Street Station Location"
+          />
+          <AnyReactComponent
+            lat={21.428016}
+            lng={39.828845}
+            text="AlMarwa Station Station Location"
           />
               <AnyReactComponent
          
@@ -734,10 +814,14 @@ export class MapContainer extends React.Component <any> {
             text="Ajyad Station Location"
           />
         </GoogleMapReact>
+
+
+
       </div>
     );
   }
 }
+
 
 class Bookcar  extends React.Component {
             
@@ -951,6 +1035,7 @@ class App extends React.Component {
               <li><Link to="/Dashboard">Dashboard </Link></li> 
               <li><Link to="/LogIn"> LogIn </Link></li> 
               <li><Link to="/MapContainer"> MapContainer </Link></li>
+            
           </ul>
          <div>
              <Routes>
@@ -964,6 +1049,7 @@ class App extends React.Component {
                 <Route path="/Dashboard" element ={< Dashboard />}/> 
                 <Route path="/LogIn" element ={< LogIn />}/> 
                 <Route path="/MapContainer" element ={< MapContainer />}/> 
+                
 
             
              </Routes>

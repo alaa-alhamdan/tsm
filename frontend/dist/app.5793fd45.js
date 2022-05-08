@@ -107836,6 +107836,7 @@ var AnyReactComponent = function AnyReactComponent(_a) {
   return /*#__PURE__*/React.createElement("div", null, text);
 };
 
+var API_KEY = 'AIzaSyC1QAymcINjIAuP8b-p1TIWd9xJwzh77oY';
 var mapStyles = {
   width: '100%',
   height: '100%'
@@ -107843,7 +107844,7 @@ var mapStyles = {
 
 var paths = require('./2paths.jpg');
 
-var map = require('./onemap.jpg');
+var map2 = require('./onemap.jpg');
 
 var useState = React.useState,
     useEffect = React.useEffect,
@@ -107952,7 +107953,7 @@ function (_super) {
       width: "300",
       height: "300"
     }), /*#__PURE__*/React.createElement("img", {
-      src: map,
+      src: map2,
       width: "300",
       height: "300"
     }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", null, " you can : "), /*#__PURE__*/React.createElement("ul", null, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement(Link, {
@@ -108483,58 +108484,110 @@ var Metric =
 function (_super) {
   __extends(Metric, _super);
 
-  function Metric() {
-    var _this = _super !== null && _super.apply(this, arguments) || this;
+  function Metric(props) {
+    var _this = _super.call(this, props) || this;
 
     _this.state = {
-      minutes: 10,
-      seconds: 0
+      originLat: null,
+      originLng: null,
+      destLat: null,
+      destLng: null,
+      distance1: null,
+      duration1: null,
+      distance2: null,
+      duration2: null
     };
+    _this.onScriptLoad = _this.onScriptLoad.bind(_this);
     return _this;
   }
+
+  Metric.prototype.onScriptLoad = function () {
+    var _this = this;
+
+    var coordsArray = [{
+      lat: 21.334094,
+      lng: 39.945512
+    }, {
+      lat: 21.416721,
+      lng: 39.827589
+    }];
+    this.setState({
+      originLat: coordsArray[0].lat,
+      originLng: coordsArray[0].lng,
+      destLat: coordsArray[0].lat,
+      destLng: coordsArray[0].lng
+    });
+    var service = new google.maps.DistanceMatrixService();
+    service.getDistanceMatrix({
+      origins: [{
+        lat: 21.334094,
+        lng: 39.945512
+      }],
+      destinations: [{
+        lat: 21.416721,
+        lng: 39.827589
+      }],
+      travelMode: "DRIVING"
+    }, function (response, status) {
+      if (status !== "OK") {
+        alert("Error was: " + status);
+      } else {
+        _this.setState({
+          distance1: response.rows[0].elements[0].distance.text,
+          duration1: response.rows[0].elements[0].duration.text
+        });
+      }
+    });
+    var service2 = new google.maps.DistanceMatrixService();
+    service2.getDistanceMatrix({
+      origins: [{
+        lat: 21.471654,
+        lng: 39.843240
+      }],
+      destinations: [{
+        lat: 21.428016,
+        lng: 39.828845
+      }],
+      travelMode: "DRIVING"
+    }, function (response, status) {
+      if (status !== "OK") {
+        alert("Error was: " + status);
+      } else {
+        _this.setState({
+          distance2: response.rows[0].elements[0].distance.text,
+          duration2: response.rows[0].elements[0].duration.text
+        });
+      }
+    });
+  };
 
   Metric.prototype.componentDidMount = function () {
     var _this = this;
 
-    this.myInterval = setInterval(function () {
-      var _a = _this.state,
-          seconds = _a.seconds,
-          minutes = _a.minutes;
+    if (!window.google) {
+      var s = document.createElement("script");
+      s.type = "text/javascript";
+      s.src = "https://maps.google.com/maps/api/js?key=AIzaSyC1QAymcINjIAuP8b-p1TIWd9xJwzh77oY";
+      var x = document.getElementsByTagName("script")[0];
+      x.parentNode.insertBefore(s, x); // Below is important.
+      //We cannot access google.maps until it's finished loading
 
-      if (seconds > 0) {
-        _this.setState(function (_a) {
-          var seconds = _a.seconds;
-          return {
-            seconds: seconds - 1
-          };
-        });
-      }
-
-      if (seconds === 0) {
-        if (minutes === 0) {
-          clearInterval(_this.myInterval);
-        } else {
-          _this.setState(function (_a) {
-            var minutes = _a.minutes;
-            return {
-              minutes: minutes - 1,
-              seconds: 59
-            };
-          });
-        }
-      }
-    }, 1000);
-  };
-
-  Metric.prototype.componentWillUnmount = function () {
-    clearInterval(this.myInterval);
+      s.addEventListener("load", function (e) {
+        _this.onScriptLoad();
+      });
+    } else {
+      this.onScriptLoad();
+    }
   };
 
   Metric.prototype.render = function () {
-    var _a = this.state,
-        minutes = _a.minutes,
-        seconds = _a.seconds;
-    return /*#__PURE__*/React.createElement("div", null, minutes === 0 && seconds === 0 ? /*#__PURE__*/React.createElement("h1", null, "Busted!") : /*#__PURE__*/React.createElement("h1", null, "Time Estmated  for bus from path 6  to arrive : ", minutes, ":", seconds < 10 ? "0".concat(seconds) : seconds));
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 500,
+        height: 500
+      },
+      id: this.props.id
+    }, /*#__PURE__*/React.createElement("h1", null, " Distance Matrix:"), /*#__PURE__*/React.createElement("p", null, "  Distance Matrix by using google map API  "), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("label", null, "Origin: Um Al Qura station"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("label", null, "Destination:  Ajyad Station"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("label", null, "Distance between the Um Al Qura station to Ajyad Station is :", this.state.distance1), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("label", null, "Duration between the Um Al Qura station to Ajyad Station is :", this.state.duration1), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("label", null, "Origin: Alhajj Street station"), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("label", null, "Destination: AlMarwa Station."), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("label", null, "Distance between the Alhajj Street station to AlMarwa Station is :", this.state.distance2), /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("label", null, "Duration between the Alhajj Street station to AlMarwa Station is :", this.state.duration2));
   };
 
   return Metric;
@@ -108556,7 +108609,7 @@ function (_super) {
         width: '35%',
         justifyContent: 'flex-end'
       }
-    }, /*#__PURE__*/React.createElement(google_map_react_1.default, {
+    }, /*#__PURE__*/React.createElement("h1", null, " Stations location"), /*#__PURE__*/React.createElement("p", null, "here you can find the location of the buses stations, you can zoom to see more  "), /*#__PURE__*/React.createElement(google_map_react_1.default, {
       bootstrapURLKeys: {
         key: 'AIzaSyC1QAymcINjIAuP8b-p1TIWd9xJwzh77oY'
       },
@@ -108569,6 +108622,14 @@ function (_super) {
       lat: 21.334094,
       lng: 39.945512,
       text: "Um Al Qura Station Location"
+    }), /*#__PURE__*/React.createElement(AnyReactComponent, {
+      lat: 21.471654,
+      lng: 39.843240,
+      text: "Alhajj Street Station Location"
+    }), /*#__PURE__*/React.createElement(AnyReactComponent, {
+      lat: 21.428016,
+      lng: 39.828845,
+      text: "AlMarwa Station Station Location"
     }), /*#__PURE__*/React.createElement(AnyReactComponent, {
       lat: 21.416721,
       lng: 39.827589,
@@ -108851,7 +108912,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60981" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55475" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
